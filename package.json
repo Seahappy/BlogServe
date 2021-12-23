@@ -1,0 +1,35 @@
+{
+  "name": "blogserve",
+  "version": "1.0.0",
+  "description": "个人博客站点服务",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon",
+    "test": "npm audit fix --dry-run --json",
+    "build": "yarn test && webpack --config build.js --mode production"
+  },
+  "author": "SeaHappy",
+  "license": "ISC",
+  "dependencies": {
+    "connect-history-api-fallback": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "log4js": "^6.3.0",
+    "mongodb": "^4.2.2",
+    "mongoose": "^5.13.13",
+    "multer": "^1.4.4",
+    "nodemon": "^2.0.7",
+    "pinyin-engine": "^1.2.2",
+    "shelljs": "^0.8.4",
+    "socket.io": "^4.0.1",
+    "systeminformation": "^5.9.3"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0"
+  }
+}

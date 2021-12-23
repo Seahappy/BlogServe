@@ -2,7 +2,7 @@
 * @Author: Cxy
 * @Date: 2021-02-25 14:03:18
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-23 09:58:52
+ * @LastEditTime: 2021-12-23 17:34:50
  * @FilePath: \blog\blogserve\index.js
 */
 /* 引入日志 */
@@ -74,5 +74,5 @@ const options = {
 };
 const https = require('https')
 https.createServer(options, app).listen(port, '0.0.0.0', () => {
-  console('🌈🌈🌈   服务起来了！！！')
+  console('🌈🌈🌈   服务起来了11！！！')
 })

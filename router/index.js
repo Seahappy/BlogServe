@@ -2,7 +2,7 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:02:42
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-10 17:15:38
+ * @LastEditTime: 2021-12-30 20:22:43
  * @FilePath: \blog\blogserve\router\index.js
  */
 const express = require('express')
@@ -62,6 +62,7 @@ router.post('/WebsiteMessage', other.WebsiteMessage)
 router.get('/GetWebsiteMessage', other.GetWebsiteMessage)
 router.post('/deleteWebsiteMessage', other.deleteWebsiteMessage)
 router.get('/TimeLineData', other.TimeLineData)
+router.post('/siteMapGenerate', other.siteMapGenerate)
 
 /* 系统监控 */
 const system = require('./system')

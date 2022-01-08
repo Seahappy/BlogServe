@@ -3,7 +3,7 @@
  * @Author: Cxy
  * @Date: 2021-11-25 15:40:42
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-14 14:20:12
+ * @LastEditTime: 2022-01-06 20:01:09
  * @FilePath: \blog\blogserve\router\network.js
  */
 
@@ -15,6 +15,7 @@ const codeMapData = fs.readFileSync('./public/map/cityMap.json') // 城市、乡
 const getNetworkData = async (req, res) => {
   const { skip, limit } = req.query
   const data = await aggreToAggreCount('network', [
+    { $sort: { _id: 1 } },
     { $lookup: { from: 'users', localField: 'admin_Code', foreignField: 'admin_Code', as: 'users' } },
     {
       $project: {
@@ -23,7 +24,6 @@ const getNetworkData = async (req, res) => {
         'users.nick_Name': 1, 'users.online_Offline': 1, 'users.admin_Code': 1, 'users.public_IP': 1
       }
     },
-    { $sort: { created_At: -1 } },
     { $skip: Number(skip) },
     { $limit: Number(limit) }
   ])

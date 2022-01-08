@@ -3,7 +3,7 @@
  * @Author: Cxy
  * @Date: 2021-09-23 20:45:10
  * @LastEditors: Cxy
- * @LastEditTime: 2021-10-11 17:32:57
+ * @LastEditTime: 2022-01-07 15:35:00
  * @FilePath: \blog\blogserve\router\system.js
  */
 
@@ -18,7 +18,7 @@ const iconv = require('iconv-lite')
 const serverInfo = ['mongod.exe', 'node.exe', 'cmd.exe', 'nginx.exe']
 const valueObject = {
   // 网速 rx 接收 tx 传输
-  // networkStats: 'rx_sec, rx_bytes, tx_sec, tx_bytes, ms',
+  networkStats: 'rx_sec, rx_bytes, tx_sec, tx_bytes, ms',
   time: '*',
   // cpu负载
   currentLoad: 'currentLoad,currentLoadUser, currentLoadSystem',
@@ -35,10 +35,10 @@ const valueObject = {
 function getSystemD() {
   return new Promise(resolve => {
     si.get(valueObject).then(data => {
-      const proceObjList = data.processes.list.filter(c => serverInfo.includes(c.name)).reduce((prev, cur) => {
+      const proceObjList = data.processes.list.filter(c => serverInfo.includes(c.name) && !isNaN(c.memRss)).reduce((prev, cur) => {
         if (Object.keys(prev).includes(cur.name)) {
           Object.keys(cur).forEach(c => {
-            if (typeof cur[c] === 'number') prev[cur.name][c] = prev[cur.name][c] + cur[c]
+            if (typeof cur[c] === 'number') prev[cur.name][c] += cur[c]
           })
         } else {
           prev[cur.name] = cur
@@ -76,17 +76,24 @@ function getNetStats(selectSecondsT) {
   })
 }
 
-const getSystemData = async (req, res) => {
-  const { selectSecondsT } = req.body
+let sysTemAllData = {}
+const timeIntSys = async () => {
   const systemData = await getSystemD()
-  const networkStats = await getNetStats(selectSecondsT)
+  // const networkStats = await getNetStats(selectSecondsT)
   // 内存 mem: 'total, free, used',
   const free = os.freemem()
   const total = os.totalmem()
   const mem = { free, total, used: total - free }
   // 系统信息 osInfo: 'logofile, hostname'
   const osInfo = { logofile: os.type(), hostname: os.hostname() }
-  const sysTemAllData = Object.assign(systemData, { networkStats }, { mem }, { osInfo }, { nodeUptime: process.uptime() })
+  sysTemAllData = Object.assign(systemData, { mem }, { osInfo }, { nodeUptime: process.uptime() })
+}
+
+setInterval(() => {
+  timeIntSys()
+}, 5000)
+
+const getSystemData = async (_, res) => {
   res.send({ code: 200, data: sysTemAllData })
 }
 

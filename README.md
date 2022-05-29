@@ -1,4 +1,20 @@
 # blogServe
-基于节点的快车架搭建的博客平台
 
-项目地址：https://www.seahappy.xyz
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+[项目地址](https://www.seahappy.xyz)
+
+### 项目基于**node-14.15**进行开发

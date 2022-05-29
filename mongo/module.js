@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-03-04 20:49:52
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-11 17:47:00
- * @FilePath: \blog\blogserve\mongo\module.js
+ * @LastEditTime: 2022-05-25 16:47:45
+ * @FilePath: \ehomes-admind:\blog\blogServe\mongo\module.js
  */
 /* new Schema 规定表的结构骨架 如果传的值不是规定的类型会强制转换，转换不成功将抛出错误 */
 const mongoose = require('./connectDB')
@@ -16,9 +16,9 @@ const userSchema = new Schema({
   role_Name: { type: String },
   online_Offline: { type: Number, require: true, default: 0 },
   socket_Id: { type: String, require: true, default: '' },
-  Login_Device: { type: String, require: true, default: '' },
+  login_Device: { type: String, require: true, default: '' },
   frozen_State: { type: Number, require: true, default: 0 },
-  chat_Data: { type: Object, default: {} },
+  chat_Data: { any: {} },
   head_Portrait: { type: String },
   nick_Name: { type: String },
   My_Qq: { type: String },
@@ -29,6 +29,20 @@ const userSchema = new Schema({
   brief_Introduction: { type: String },
   public_IP: { type: String }
 }, { timestamps: { createdAt: 'created_At', updatedAt: 'updated_At' } })
+
+/* 聊天 */
+const chatSchema = new Schema({
+  send_Admin_Code: { type: String, required: true },
+  send_Nick_Name: { type: String },
+  send_Head_Portrait: { type: String },
+  send_Login_Device: { type: String },
+  receive_Admin_Code: { type: String, required: true },
+  receive_Nick_Name: { type: String },
+  receive_Head_Portrait: { type: String },
+  receive_Login_Device: { type: String },
+  chat_Content: { type: String, required: true },
+  sending_Time: { type: Number, required: true }
+})
 
 /* 文章 */
 const articleSchema = new Schema({
@@ -169,6 +183,7 @@ const roleSchema = new Schema({
 
 module.exports = {
   userSchema,
+  chatSchema,
   articleSchema,
   articleTagSchema,
   articleCommentSchema,

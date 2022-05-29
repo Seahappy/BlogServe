@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2021-11-25 15:40:42
  * @LastEditors: Cxy
- * @LastEditTime: 2022-01-06 20:01:09
- * @FilePath: \blog\blogserve\router\network.js
+ * @LastEditTime: 2022-05-26 19:20:09
+ * @FilePath: \blogGitee\blogServe\router\network.js
  */
 
 const { aggreToAggreCount, aggre, updateMany, find } = require('../mongo/db')
@@ -13,8 +13,9 @@ const fs = require('fs')
 const codeMapData = fs.readFileSync('./public/map/cityMap.json') // 城市、乡镇对应code码的键值对
 
 const getNetworkData = async (req, res) => {
-  const { skip, limit } = req.query
-  const data = await aggreToAggreCount('network', [
+  const { skip, limit, selectTypeKet, selectValue } = req.query
+  const match = [{ $match: { [selectTypeKet]: selectValue } }]
+  const otherCondition = [
     { $sort: { _id: 1 } },
     { $lookup: { from: 'users', localField: 'admin_Code', foreignField: 'admin_Code', as: 'users' } },
     {
@@ -26,7 +27,8 @@ const getNetworkData = async (req, res) => {
     },
     { $skip: Number(skip) },
     { $limit: Number(limit) }
-  ])
+  ]
+  const data = await aggreToAggreCount('network', selectTypeKet ? match.concat(otherCondition) : otherCondition)
   data.data.map(c => {
     const flowData = global.realIp_Database[c.public_IP]
     c.access_Time = flowData?.access_Time || 0
@@ -49,7 +51,7 @@ const getNetworkPointData = async (req, res) => {
     {
       $project: {
         'city_IP': 1, 'value': '$long_Lat', '_id': 0, 'county_IP': 1, 'province_IP': 1,
-        'name': '$location_IP', 'admin_Code': 1, 'public_IP': 1
+        'name': '$location_IP', 'admin_Code': 1, 'public_IP': 1, 'created_At': 1
       }
     }
   ])

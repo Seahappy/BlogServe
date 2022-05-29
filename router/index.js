@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:02:42
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-30 20:22:43
- * @FilePath: \blog\blogserve\router\index.js
+ * @LastEditTime: 2022-05-25 13:44:37
+ * @FilePath: \ehomes-admind:\blog\blogServe\router\index.js
  */
 const express = require('express')
 const router = express.Router()
@@ -77,5 +77,9 @@ router.get('/getNetworkPointData', network.getNetworkPointData)
 router.get('/getNetworkOnlineData', network.getNetworkOnlineData)
 router.post('/setRealIPLocation', network.setRealIPLocation)
 router.post('/getMapJosnData', network.getMapJosnData)
+
+/* 聊天直播 */
+const chat = require('./chat')
+router.get('/getChatData', chat.getChatData)
 
 module.exports = router

@@ -2,14 +2,17 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:04:45
  * @LastEditors: Cxy
- * @LastEditTime: 2021-11-24 14:13:28
- * @FilePath: \blog\blogserve\mongo\index.js
+ * @LastEditTime: 2022-05-18 14:22:00
+ * @FilePath: \ehomes-admind:\blog\blogServe\mongo\index.js
  */
 const { model } = require('./connectDB')
 const schemas = require('./module.js')
 
-/* 管理员 */
+/* 人员 */
 const users = model('users', schemas.userSchema);
+
+/* 聊天记录 */
+const chat = model('chat', schemas.chatSchema);
 
 /* 文章 */
 // 重命名 article mongoose 表名 原因mongoose会自动给表明后加s表名以s结尾的除外
@@ -37,13 +40,14 @@ const power = model('power', schemas.powerSchema)
 const role = model('role', schemas.roleSchema)
 
 module.exports = {
-    users,
-    article,
-    articleTag,
-    articleComment,
-    network,
-    views,
-    statics,
-    power,
-    role
+  users,
+  chat,
+  article,
+  articleTag,
+  articleComment,
+  network,
+  views,
+  statics,
+  power,
+  role
 }

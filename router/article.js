@@ -44,7 +44,7 @@ const articleFind = async (req, res) => {
     { $lookup: { from: 'users', localField: 'admin_Code', foreignField: 'admin_Code', as: 'users' } },
     {
       $project: {
-        'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.Login_Device': 0,
+        'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.login_Device': 0,
         'users.frozen_State': 0, 'users.pass_Word': 0, 'users.admin_level': 0, 'users.role_Name': 0,
         'users.chat_Data': 0, content_Article: 0, 'users.brief_Introduction': 0, 'users.head_Portrait': 0,
         'users.My_Qq': 0, 'users.My_Wb': 0, 'users.My_Wx': 0, 'users.My_Reward_Wx': 0, 'users.My_Reward_Zfb': 0,
@@ -114,7 +114,7 @@ const ArticlePrevNext = async (req, res) => {
       { $lookup: { from: 'users', localField: 'admin_Code', foreignField: 'admin_Code', as: 'users' } },
       {
         $project: {
-          'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.Login_Device': 0,
+          'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.login_Device': 0,
           'users.frozen_State': 0, 'users.pass_Word': 0, 'users.admin_level': 0, 'users.role_Name': 0,
           'users.chat_Data': 0
         }
@@ -190,7 +190,7 @@ const articleViewPage = async (req, res) => {
     { $lookup: { from: 'users', localField: 'admin_Code', foreignField: 'admin_Code', as: 'users' } },
     {
       $project: {
-        'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.Login_Device': 0,
+        'users._id': 0, 'users.online_Offline': 0, 'users.socket_Id': 0, 'users.login_Device': 0,
         'users.frozen_State': 0, 'users.pass_Word': 0, 'users.admin_level': 0, 'users.role_Name': 0,
         'users.chat_Data': 0
       }

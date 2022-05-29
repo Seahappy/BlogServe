@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:05:43
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-10 10:45:54
- * @FilePath: \blog\blogserve\router\user.js
+ * @LastEditTime: 2022-05-23 15:40:08
+ * @FilePath: \ehomes-admind:\blog\blogServe\router\user.js
  */
 const { tokenC, findC } = require('./code')
 const { find, aggre, insertOne, updateMany, findCount, findToFindCount } = require('../mongo/db')
@@ -30,7 +30,7 @@ const reg = async (req, res) => {
   if (findData.countNum === 1) {
     res.send({ code: findC, massage: '该账号已注册' })
   } else {
-    const { data: [{ name, _id }] } = await find('role', { name: '普通用户' })
+    const { data: [{ name, _id }] } = await find('role', { name: '普通角色' })
     const data = await insertOne('users', Object.assign(req.body, { admin_level: _id, role_Name: name }))
     interfaceReturn('insertOne', data, '注册成功，即将跳转登陆页面', '注册失败，请重新注册', res)
   }
@@ -48,7 +48,7 @@ const routerData = async (req, res) => {
       { $lookup: { from: 'roles', localField: 'admin_level', foreignField: '_id', as: 'powerDataDoc' } },
       { $project: { _id: 0, 'powerDataDoc.powerData': 1 } }
     ])
-    if (data.data[0].powerDataDoc.length === 0) return res.send({ code: 200, routerData: [], buttonData: [], massage: '该用户未配角色' })
+    if (!data.data[0] || data.data[0].powerDataDoc.length === 0) return res.send({ code: 200, routerData: [], buttonData: [], massage: '该用户未配角色' })
     const { checked, checkSemi } = data.data[0].powerDataDoc[0].powerData
     power_Data_List = await find('power', { id: { $in: checked.concat(checkSemi) } }, {}, { _id: 0, id: 1, path: 1, pid: 1, title: 1, type: 1 })
   }

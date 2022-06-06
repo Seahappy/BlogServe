@@ -2,14 +2,14 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:05:43
  * @LastEditors: Cxy
- * @LastEditTime: 2022-05-23 15:40:08
+ * @LastEditTime: 2022-06-02 14:16:26
  * @FilePath: \ehomes-admind:\blog\blogServe\router\user.js
  */
 const { tokenC, findC } = require('./code')
-const { find, aggre, insertOne, updateMany, findCount, findToFindCount } = require('../mongo/db')
+const { find, aggre, insertOneAutoincr, updateMany, findCount, findToFindCount } = require('../mongo/db')
 const { signJwt, verifyJwt } = require('../jwt')
 const interfaceReturn = require('./until')
-const { now } = require('mongoose')
+
 // @获取token
 const getToken = async (req, res) => {
   res.send({ code: 200, token: signJwt(req.query, 1) })
@@ -31,7 +31,7 @@ const reg = async (req, res) => {
     res.send({ code: findC, massage: '该账号已注册' })
   } else {
     const { data: [{ name, _id }] } = await find('role', { name: '普通角色' })
-    const data = await insertOne('users', Object.assign(req.body, { admin_level: _id, role_Name: name }))
+    const data = await insertOneAutoincr('users', 'user_id', Object.assign(req.body, { admin_level: _id, role_Name: name }))
     interfaceReturn('insertOne', data, '注册成功，即将跳转登陆页面', '注册失败，请重新注册', res)
   }
 }

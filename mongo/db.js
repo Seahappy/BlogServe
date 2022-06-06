@@ -2,13 +2,13 @@
  * @Author: Cxy
  * @Date: 2021-03-05 11:18:12
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-15 17:58:09
+ * @LastEditTime: 2022-06-06 21:25:49
  * @FilePath: \blog\blogserve\mongo\db.js
  */
 const model = require('./index')
 const mongoose = require('./connectDB')
 
-module.exports.insertOne = (colleName, data) => {
+const insertOne = (colleName, data) => {
   return new Promise((resolve, reject) => {
     model[colleName].create(data, err => {
       if (err) reject(err)
@@ -16,6 +16,24 @@ module.exports.insertOne = (colleName, data) => {
     })
   })
 }
+module.exports.insertOne = insertOne
+
+/**
+ * @description: 具有自增id的存储
+ * @param {*} colleName
+ * @param {*} data
+ */
+module.exports.insertOneAutoincr = (colleName, autoincreCond, data) => {
+  return new Promise((resolve, reject) => {
+    model['autoKey'].findOneAndUpdate({ name: 'autoKey' }, { $inc: { [autoincreCond]: 1 } }, { new: true, }, async (err, docs) => {
+      if (!docs) model['autoKey'].create({})
+      if (err) reject(err)
+      const addData = await insertOne(colleName, { id: docs?.user_id.toString() || '1', ...data })
+      resolve(addData)
+    })
+  })
+}
+
 
 /**
  * @description: find查询
@@ -87,7 +105,7 @@ const aggreCount = (colleName, queryCri) => {
     })
     model[colleName].aggregate(queryCriCopy.concat({ "$count": "countNum" }), (err, data) => {
       if (err) reject(err)
-      resolve({countNum: data[0]?.countNum || 0})
+      resolve({ countNum: data[0]?.countNum || 0 })
     })
   })
 }

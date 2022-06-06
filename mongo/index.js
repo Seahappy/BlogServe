@@ -2,7 +2,7 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:04:45
  * @LastEditors: Cxy
- * @LastEditTime: 2022-05-18 14:22:00
+ * @LastEditTime: 2022-06-02 13:43:50
  * @FilePath: \ehomes-admind:\blog\blogServe\mongo\index.js
  */
 const { model } = require('./connectDB')
@@ -39,6 +39,9 @@ const power = model('power', schemas.powerSchema)
 /* 角色表 */
 const role = model('role', schemas.roleSchema)
 
+/* 管理自增id表 */
+const autoKey = model('autoKey', schemas.autoKeySchema)
+
 module.exports = {
   users,
   chat,
@@ -49,5 +52,6 @@ module.exports = {
   views,
   statics,
   power,
-  role
+  role,
+  autoKey
 }

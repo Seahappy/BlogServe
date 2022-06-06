@@ -2,7 +2,7 @@
  * @Author: Cxy
  * @Date: 2021-05-23 15:03:35
  * @LastEditors: Cxy
- * @LastEditTime: 2022-05-25 13:52:57
+ * @LastEditTime: 2022-06-06 15:01:14
  * @FilePath: \ehomes-admind:\blog\blogServe\socket\login.js
  */
 const io = require('./server')
@@ -11,13 +11,17 @@ const { find, updateMany } = require('../mongo/db')
 module.exports = login = socket => {
   // 客户端刷新页面时，替换sockeID并改变登录状态
   socket.on('Refresh_Get_User', async data => {
-    // // 获取登陆人用户名
+    // 将登录人加入全站房间与游客的创建的socket软隔离
+    socket.join('rootRoom')
+    // 获取登陆人用户名
     const online_Data = await update_Find_Online(data, socket)
     socket.emit('Login_Users', { data: online_Data })
-    socket.broadcast.emit('Login_Users', { data: online_Data })
+    socket.to('rootRoom').emit('Login_Users', { data: online_Data })
   })
   // 登录前判断登录人是否多点登录，已多点登录推送当前登陆人消息并询问是否强制登录，未多点登录直接登录成功并改变登录状态
   socket.on('Get_Login_Users', async data => {
+    // 将登录人加入全站房间与游客的创建的socket软隔离
+    socket.join('rootRoom')
     const { admin_Code, pass_Word } = data
     const Users_Out_In = await find('users', { admin_Code })
     const { countNum, data: user_Data } = Users_Out_In
@@ -31,7 +35,7 @@ module.exports = login = socket => {
     if (user_Data[0].online_Offline === 0) {
       const Login_Users = await update_Find_Online(data, socket)
       socket.emit('Login_Users', { data: Login_Users, Users, code: 200 })
-      socket.broadcast.emit('Login_Users', { data: Login_Users, code: 200 }); // 发送给其他人
+      socket.to('rootRoom').emit('Login_Users', { data: Login_Users, code: 200 }); // 发送给其他人
     } else {
       socket.emit('Login_Users', { massage: '账号已在其他位置登录，是否强制登录', code: 400, Users, data: [] })
     }
@@ -43,7 +47,7 @@ module.exports = login = socket => {
     // 通过该连接对象to(socketId)与链接到这个对象的客户端进行单独通信
     io.to(login_User.data[0].socket_Id).emit('Ago_Login_Users', '账号在其他位置登录，请留意被盗');
     const Login_Users = await update_Find_Online(data, socket)
-    socket.broadcast.emit('Login_Users', { data: Login_Users, code: 200 }); // 发送给其他人
+    socket.to('rootRoom').emit('Login_Users', { data: Login_Users, code: 200 }); // 发送给其他人
     socket.emit('Login_Users', { data: Login_Users })
   })
   // 强制用户下线

@@ -2,8 +2,8 @@
 * @Author: Cxy
 * @Date: 2021-02-25 14:03:18
  * @LastEditors: Cxy
- * @LastEditTime: 2021-12-25 21:11:54
- * @FilePath: \blog\blogserve\index.js
+ * @LastEditTime: 2022-06-04 13:24:40
+ * @FilePath: \ehomes-admind:\blog\blogServe\index.js
 */
 /* 引入日志 */
 const { console, err, info, reqS } = require('./log')
@@ -29,7 +29,7 @@ app.use(bodyParse.urlencoded({ extended: true, limit: '50mb' }))
 const RouteNotVerified = ['getToken', 'checkToken', 'articleFind', 'articleTagFind', 'articleFindNewLike', 'ArticlePrevNext',
   'articleViewPage', 'articleSearchFuzzy', 'reg', 'randomToArticles', 'ViewsTotle', 'GuessYouLike', 'commentGetArticle',
   'WebsiteMessage', 'GetWebsiteMessage', 'TimeLineData', 'articleStatistics', 'homePageStatistics', 'homePageStatisticsNum',
-  'setRealIPLocation']
+  'setRealIPLocation', 'getLiveBroadcast']
 /* 全局请求配置及请求日志打印 */
 app.use(async (req, res, next) => {
   const startT = new Date()
@@ -64,6 +64,10 @@ app.use('/', router)
 /* socket 启动 */
 const socket = require('./socket')
 socket()
+
+/* live 启动 */
+const live = require('./live')
+live.run();
 
 const fs = require('fs')
 const key = fs.readFileSync('../2_www.seahappy.xyz.key')

@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-03-04 20:49:52
  * @LastEditors: Cxy
- * @LastEditTime: 2022-05-25 16:47:45
- * @FilePath: \ehomes-admind:\blog\blogServe\mongo\module.js
+ * @LastEditTime: 2022-06-06 21:25:45
+ * @FilePath: \blog\blogserve\mongo\module.js
  */
 /* new Schema 规定表的结构骨架 如果传的值不是规定的类型会强制转换，转换不成功将抛出错误 */
 const mongoose = require('./connectDB')
@@ -18,7 +18,7 @@ const userSchema = new Schema({
   socket_Id: { type: String, require: true, default: '' },
   login_Device: { type: String, require: true, default: '' },
   frozen_State: { type: Number, require: true, default: 0 },
-  chat_Data: { any: {} },
+  id: { type: String, require: true },
   head_Portrait: { type: String },
   nick_Name: { type: String },
   My_Qq: { type: String },
@@ -27,7 +27,14 @@ const userSchema = new Schema({
   My_Reward_Wx: { type: String },
   My_Reward_Zfb: { type: String },
   brief_Introduction: { type: String },
-  public_IP: { type: String }
+  public_IP: { type: String },
+  room_Title: { type: String },
+  room_Description: { type: String },
+  live_Image: { type: String },
+  live_Status: { type: Number, default: 0 },
+  room_Address: { type: String },
+  room_Key: { type: String },
+  room_Heat: { type: Number, default: 0 },
 }, { timestamps: { createdAt: 'created_At', updatedAt: 'updated_At' } })
 
 /* 聊天 */
@@ -180,6 +187,12 @@ const roleSchema = new Schema({
   { timestamps: { createdAt: 'created_At', updatedAt: 'updated_At' } }
 )
 
+/* 管理自增id的表 */
+const autoKeySchema = new Schema({
+  user_id: { type: Number, require: true, default: 1 },
+  name: { type: String, require: true, default: 'autoKey' }
+})
+
 
 module.exports = {
   userSchema,
@@ -191,5 +204,6 @@ module.exports = {
   viewsSchema,
   staticSchema,
   powerSchema,
-  roleSchema
+  roleSchema,
+  autoKeySchema
 }

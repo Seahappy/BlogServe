@@ -2,23 +2,24 @@
  * @Author: Cxy
  * @Date: 2021-05-21 20:57:27
  * @LastEditors: Cxy
- * @LastEditTime: 2021-11-26 16:54:23
- * @FilePath: \blog\blogserve\socket\index.js
+ * @LastEditTime: 2022-06-06 15:03:09
+ * @FilePath: \ehomes-admind:\blog\blogServe\socket\index.js
  */
-const { updateMany } = require('../mongo/db')
 const io = require('./server')
 const { console } = require('../log')
 const { verifyJwt } = require('../jwt')
 const update_Find_Online = require('./until')
 const login = require('./login')
-const send_Message_Data = require('./chat')
+const chat = require('./chat')
+const live = require('./live')
+const whiteList = ['Get_Login_Users', 'Current_Out_Users', 'send_Msg', 'receive_Msg', 'join_Room', 'leave_Room']
 const socketIo = () => {
   io.on('connection', async socket => {
     console('🌈🌈🌈   socket服务起来了！！！')
     // 链接socket时或推送信息时验证token
     socket.use((a, next) => {
       const TK = verifyJwt(socket.handshake.auth.token)
-      if (TK || a[0] === 'Get_Login_Users' || a[0] === 'Current_Out_Users') {
+      if (TK || whiteList.includes(a[0])) {
         next()
       } else {
         socket.emit('checkToken', '账号过期请重新登录')
@@ -29,11 +30,12 @@ const socketIo = () => {
       // 客户端断开连接时，根据当前客户端已存socketID初始化登录信息
       const Login_Users = await update_Find_Online(data, socket, false)
       // 向其他链接客户端广播此人退出登录
-      socket.broadcast.emit('Login_Users', { data: Login_Users })
+      socket.to('rootRoom').emit('Login_Users', { data: Login_Users })
       console('🌈🌈🌈   socket服务断开链接！！！')
     })
     login(socket)
-    send_Message_Data(socket)
+    chat(socket)
+    live(socket)
   })
 
 }

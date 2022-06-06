@@ -2,7 +2,7 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:02:42
  * @LastEditors: Cxy
- * @LastEditTime: 2022-05-25 13:44:37
+ * @LastEditTime: 2022-06-04 20:01:49
  * @FilePath: \ehomes-admind:\blog\blogServe\router\index.js
  */
 const express = require('express')
@@ -78,8 +78,16 @@ router.get('/getNetworkOnlineData', network.getNetworkOnlineData)
 router.post('/setRealIPLocation', network.setRealIPLocation)
 router.post('/getMapJosnData', network.getMapJosnData)
 
-/* 聊天直播 */
+/* 聊天 */
 const chat = require('./chat')
 router.get('/getChatData', chat.getChatData)
+
+/* 直播 */
+const live = require('./live')
+router.get('/getLiveData', live.getLiveData)
+router.post('/setLiveData', live.setLiveData)
+router.get('/idDuplicateCheck', live.idDuplicateCheck)
+router.get('/getLiveBroadcast', live.getLiveBroadcast)
+router.post('/getRoomKey', live.getRoomKey)
 
 module.exports = router

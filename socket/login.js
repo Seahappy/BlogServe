@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-05-23 15:03:35
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-06 15:01:14
- * @FilePath: \ehomes-admind:\blog\blogServe\socket\login.js
+ * @LastEditTime: 2022-06-06 23:48:55
+ * @FilePath: \blog\blogserve\socket\login.js
  */
 const io = require('./server')
 const update_Find_Online = require('./until')
@@ -24,8 +24,8 @@ module.exports = login = socket => {
     socket.join('rootRoom')
     const { admin_Code, pass_Word } = data
     const Users_Out_In = await find('users', { admin_Code })
-    const { countNum, data: user_Data } = Users_Out_In
-    if (countNum === 0) return socket.emit('Login_Users', { massage: '账号未注册，请注册后登录', code: 403 })
+    const { data: user_Data } = Users_Out_In
+    if (!user_Data.length) return socket.emit('Login_Users', { massage: '账号未注册，请注册后登录', code: 403 })
     if (user_Data[0]?.pass_Word !== pass_Word) return socket.emit('Login_Users', { massage: '密码输入有误，请重新输入', code: 404 })
     if (user_Data[0].frozen_State === 1) return socket.emit('Login_Users', { massage: '登录账户已冻结', code: 405 })
     const Users = user_Data.map(c => {

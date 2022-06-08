@@ -2,8 +2,8 @@
 * @Author: Cxy
 * @Date: 2021-02-25 14:03:18
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-04 13:24:40
- * @FilePath: \ehomes-admind:\blog\blogServe\index.js
+ * @LastEditTime: 2022-06-08 15:18:45
+ * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\index.js
 */
 /* 引入日志 */
 const { console, err, info, reqS } = require('./log')
@@ -29,7 +29,7 @@ app.use(bodyParse.urlencoded({ extended: true, limit: '50mb' }))
 const RouteNotVerified = ['getToken', 'checkToken', 'articleFind', 'articleTagFind', 'articleFindNewLike', 'ArticlePrevNext',
   'articleViewPage', 'articleSearchFuzzy', 'reg', 'randomToArticles', 'ViewsTotle', 'GuessYouLike', 'commentGetArticle',
   'WebsiteMessage', 'GetWebsiteMessage', 'TimeLineData', 'articleStatistics', 'homePageStatistics', 'homePageStatisticsNum',
-  'setRealIPLocation', 'getLiveBroadcast']
+  'setRealIPLocation', 'getLiveBroadcast', 'setLiveHeat']
 /* 全局请求配置及请求日志打印 */
 app.use(async (req, res, next) => {
   const startT = new Date()

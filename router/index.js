@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-03-04 19:02:42
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-04 20:01:49
- * @FilePath: \ehomes-admind:\blog\blogServe\router\index.js
+ * @LastEditTime: 2022-06-08 15:19:52
+ * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\router\index.js
  */
 const express = require('express')
 const router = express.Router()
@@ -88,6 +88,7 @@ router.get('/getLiveData', live.getLiveData)
 router.post('/setLiveData', live.setLiveData)
 router.get('/idDuplicateCheck', live.idDuplicateCheck)
 router.get('/getLiveBroadcast', live.getLiveBroadcast)
+router.post('/setLiveHeat', live.setLiveHeat)
 router.post('/getRoomKey', live.getRoomKey)
 
 module.exports = router

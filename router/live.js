@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2022-06-02 14:15:49
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-05 01:48:03
- * @FilePath: \ehomes-admind:\blog\blogServe\router\live.js
+ * @LastEditTime: 2022-06-08 15:12:40
+ * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\router\live.js
  */
 const { find, updateMany } = require('../mongo/db')
 const interfaceReturn = require('./until')
@@ -30,10 +30,17 @@ const setLiveData = async (req, res) => {
   interfaceReturn('updateMany', data, '房间信息修改成功', '房间信息修改失败', res)
 }
 
-// @获取直播列表
+// @获取直播列表及房间信息
 const getLiveBroadcast = async (req, res) => {
   const data = await find('users', req.query, {}, { room_Title: 1, id: 1, live_Image: 1, head_Portrait: 1, nick_Name: 1, admin_Code: 1, room_Description: 1, room_Key: 1, room_Heat: 1 })
   interfaceReturn('find', data, '直播列表查询成功', '直播列表查询失败', res)
+}
+
+// @修改房间热的
+const setLiveHeat = async (req, res) => {
+  const { id, room_Heat } = req.body
+  const data = await updateMany('users', { id }, { $inc: { room_Heat } })
+  interfaceReturn('updateMany', data, '直播列表查询成功', '直播列表查询失败', res)
 }
 
 // @获取推流密钥
@@ -53,5 +60,6 @@ module.exports = {
   idDuplicateCheck,
   setLiveData,
   getLiveBroadcast,
+  setLiveHeat,
   getRoomKey
 }

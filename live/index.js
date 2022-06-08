@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2022-05-30 19:01:50
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-05 16:50:08
- * @FilePath: \ehomes-admind:\blog\blogServe\live\index.js
+ * @LastEditTime: 2022-06-08 15:12:22
+ * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\live\index.js
  */
 const NodeMediaServer = require("node-media-server")
 const { updateMany, find } = require('../mongo/db')
@@ -63,9 +63,6 @@ live.on('prePlay', async (liveId, streamPath) => {
   const findUrl = '/seaLive/' + data[0].room_Key
   const currentUrl = streamPath + '?rtExp=' + playArgesRtExp
   if (findUrl !== currentUrl) return session.reject()
-  if (playArgesRtExp) {
-    await updateMany('users', { id }, { $inc: { room_Heat: 1 } })
-  }
 })
 
 // 停拉重置直播间热度
@@ -74,7 +71,6 @@ live.on('donePlay', async (liveId) => {
   const playArgesRtExp = session.playArgs.rtExp
   const rtExpDes = desDecrypt(playArgesRtExp)
   const { id } = JSON.parse(rtExpDes)
-  await updateMany('users', { id }, { $inc: { room_Heat: -1 } })
 });
 
 module.exports = live

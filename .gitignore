@@ -1,3 +1,5 @@
 node_modules
 blogserve*
 log
+public/headPortrait
+public/liveImage

@@ -2,8 +2,8 @@
 * @Author: Cxy
 * @Date: 2021-02-25 14:03:18
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-08 15:18:45
- * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\index.js
+ * @LastEditTime: 2022-07-05 08:43:03
+ * @FilePath: \ehomes-admind:\giteeBlog\blogServe\index.js
 */
 /* 引入日志 */
 const { console, err, info, reqS } = require('./log')
@@ -69,17 +69,18 @@ socket()
 const live = require('./live')
 live.run();
 
+const SSL_LOCATION = process.env.NODE_ENV === 'production' ? '/root/SSL/' : '../'
 const fs = require('fs')
-const key = fs.readFileSync('../2_www.seahappy.xyz.key')
-const cert = fs.readFileSync('../1_www.seahappy.xyz_bundle.crt')
+const key = fs.readFileSync(SSL_LOCATION + '2_www.seahappy.xyz.key')
+const cert = fs.readFileSync(SSL_LOCATION + '1_www.seahappy.xyz_bundle.crt')
 const options = {
   key: key,
   cert: cert
 };
-// const https = require('https')
-// https.createServer(options, app).listen(port, '0.0.0.0', () => {
-//   console('🌈🌈🌈   服务起来了！！！')
-// })
-app.listen(port, '0.0.0.0', () => {
+const https = require('https')
+https.createServer(options, app).listen(port, '0.0.0.0', () => {
   console('🌈🌈🌈   服务起来了！！！')
 })
+// app.listen(port, '0.0.0.0', () => {
+//   console('🌈🌈🌈   服务起来了！！！')
+// })

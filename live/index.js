@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2022-05-30 19:01:50
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-08 15:12:22
- * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\live\index.js
+ * @LastEditTime: 2022-08-07 01:26:40
+ * @FilePath: \blogGitee\blogServe\live\index.js
  */
 const NodeMediaServer = require("node-media-server")
 const { updateMany, find } = require('../mongo/db')
@@ -31,13 +31,15 @@ const live = new NodeMediaServer(config)
 live.on('prePublish', async (liveId) => {
   const session = live.getSession(liveId)
   const rtExp = session.publishArgs.rtExp
-  if (!rtExp) return session.reject();
-  const rtExpDes = desDecrypt(rtExp)
-  const { time, id } = JSON.parse(rtExpDes)
-  if (time < new Date().getTime()) {
+  if (!rtExp || session.appname !== 'seaLive') return session.reject();
+  try {
+    const rtExpDes = desDecrypt(rtExp)
+    const { time, id } = JSON.parse(rtExpDes)
+    if (time < new Date().getTime()) return session.reject();
+    await updateMany('users', { id }, { live_Status: 1 })
+  } catch {
     return session.reject();
   }
-  await updateMany('users', { id }, { live_Status: 1 })
 })
 
 // 停推重置直播间直播状态

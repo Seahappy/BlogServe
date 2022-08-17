@@ -2,8 +2,8 @@
  * @Author: Cxy
  * @Date: 2021-07-08 10:17:10
  * @LastEditors: Cxy
- * @LastEditTime: 2022-01-04 14:48:18
- * @FilePath: \blog\blogserve\router\other.js
+ * @LastEditTime: 2022-06-27 16:49:29
+ * @FilePath: \ehomes-admind:\giteeBlog\blogServe\router\other.js
  */
 const { find, aggre, updateMany } = require('../mongo/db')
 const interfaceReturn = require('./until')
@@ -87,7 +87,7 @@ const siteMapGenerate = async (req, res) => {
   smStream.end()
   pipeline.pipe(res).on('error', (e) => { throw e })
   streamToPromise(pipeline).then(sm => {
-    let fileP = path.resolve('C:/Users/Administrator/Desktop/blogServe', 'siteMap.xml')
+    let fileP = path.resolve('C:/root/blogServe', 'siteMap.xml')
     const xmlF = unzipSync(sm).toString()
     fs.writeFile(fileP, xmlF, err => err)
   })

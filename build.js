@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2021-10-11 19:34:13
  * @LastEditors: Cxy
- * @LastEditTime: 2022-06-10 09:55:07
- * @FilePath: \ehomes-admind:\gitHubBlog\blogServe\build.js
+ * @LastEditTime: 2022-07-08 15:56:52
+ * @FilePath: \ehomes-admind:\giteeBlog\blogServe\build.js
  */
 const path = require("path")
 const CopyPlugin = require('copy-webpack-plugin')
@@ -16,7 +16,7 @@ module.exports = {
   entry: './index.js',
   // 输出文件目录
   output: {
-    path: path.resolve(__dirname, 'blogserve'),
+    path: path.resolve(__dirname, 'blogServe'),
     filename: 'index.js',
   },
   mode: 'development', // 设置mode

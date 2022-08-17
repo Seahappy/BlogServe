@@ -2,13 +2,14 @@
  * @Author: Cxy
  * @Date: 2021-05-06 16:10:07
  * @LastEditors: Cxy
- * @LastEditTime: 2021-05-22 19:23:52
- * @FilePath: \pinanStaged:\blog\blogserve\socket\server.js
+ * @LastEditTime: 2022-07-05 08:43:16
+ * @FilePath: \ehomes-admind:\giteeBlog\blogServe\socket\server.js
  */
 const app = require('express')()
-const fs = require('fs');
-const key = fs.readFileSync('../2_www.seahappy.xyz.key');
-const cert = fs.readFileSync('../1_www.seahappy.xyz_bundle.crt');
+const SSL_LOCATION = process.env.NODE_ENV === 'production' ? '/root/SSL/' : '../'
+const fs = require('fs')
+const key = fs.readFileSync(SSL_LOCATION + '2_www.seahappy.xyz.key')
+const cert = fs.readFileSync(SSL_LOCATION + '1_www.seahappy.xyz_bundle.crt')
 const options = {
     key: key,
     cert: cert

@@ -3,8 +3,8 @@
  * @Author: Cxy
  * @Date: 2021-09-23 20:45:10
  * @LastEditors: Cxy
- * @LastEditTime: 2022-01-07 15:35:00
- * @FilePath: \blog\blogserve\router\system.js
+ * @LastEditTime: 2022-07-13 16:14:34
+ * @FilePath: \ehomes-admind:\giteeBlog\blogServe\router\system.js
  */
 
 const si = require('systeminformation')
@@ -15,7 +15,10 @@ const os = require('os')
 shell.config.silent = true
 const iconv = require('iconv-lite')
 
-const serverInfo = ['mongod.exe', 'node.exe', 'cmd.exe', 'nginx.exe']
+const serverInfoWin32 = ['mongod.exe', 'node.exe', 'cmd.exe', 'nginx.exe']
+const serverInfoLinux = ['mongod', 'node', 'cmd', 'nginx', 'java', 'npm', '.pm2)']
+const serverInfo = process.platform === 'win32' ? serverInfoWin32 : serverInfoLinux
+
 const valueObject = {
   // 网速 rx 接收 tx 传输
   networkStats: 'rx_sec, rx_bytes, tx_sec, tx_bytes, ms',
@@ -45,7 +48,11 @@ function getSystemD() {
         }
         return prev
       }, {})
-      data.proceList = Object.values(proceObjList)
+      data.proceList = Object.values(proceObjList).map(c => {
+        if (c.name === '.pm2)') c.name = 'pm2'
+        if (c.name === 'java') c.name = 'jenkins'
+        return c
+      })
       delete data.processes
       resolve(data)
     })
